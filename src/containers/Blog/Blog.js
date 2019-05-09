@@ -22,9 +22,16 @@ class Blog extends Component {
       this.setState({ blogs: updatedPosts });
     });
   }
+
+  postSelectedHandler = () => {};
   render() {
     const posts = this.state.blogs.map(blog => (
-      <Post key={blog.id} title={blog.title} author={blog.author} />
+      <Post
+        key={blog.id}
+        title={blog.title}
+        author={blog.author}
+        clicked={this.postSelectedHandler.bind(this, blog.id)}
+      />
     ));
     return (
       <div>

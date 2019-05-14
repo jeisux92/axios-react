@@ -3,23 +3,43 @@ import axios from "axios";
 import "./FullPost.css";
 
 class FullPost extends Component {
-  componentDidMount() {
-    axios
-      .get(`https://jsonplaceholder.typicode.com/posts?id=${this.props.id}`)
-      .then(response => {
-        console.log(response);
-      });
+
+  state = {
+    loadedPost: null
+  }
+  componentDidUpdate() {
+    if (this.props.id) {
+
+      if (!this.state.loadedPost || (this.props.id !== this.state.loadedPost.id)) {
+        axios
+          .get(`posts?id=${this.props.id}`)
+          .then(response => {
+            this.setState({
+              loadedPost: response.data[0]
+            })
+          });
+      }
+    }
+    return true;
   }
 
+  deletePostHandler = () => {
+    axios.delete(`posts?id=${this.state.loadedPost.id}`).then(x => {
+      this.props.postDeleted();
+    })
+  }
   render() {
     let post = <p style={{ textAlign: "center" }}>Please select a Post!</p>;
     if (this.props.id) {
+      post = <p style={{ textAlign: "center" }}>Loading...</p>;
+    }
+    if (this.state.loadedPost) {
       post = (
         <div className="FullPost">
-          <h1>Title</h1>
-          <p>Content</p>
+          <h1>{this.state.loadedPost.title}</h1>
+          <p>{this.state.loadedPost.body}</p>
           <div className="Edit">
-            <button className="Delete">Delete</button>
+            <button className="Delete" onClick={this.deletePostHandler.bind(this)}>Delete</button>
           </div>
         </div>
       );

@@ -4,18 +4,17 @@ import "./FullPost.css";
 
 class FullPost extends Component {
   state = {
-    loadedPost: null
+    loadedPost: null,
   };
-  componentDidUpdate() {
+  componentDidMount() {
     if (this.props.match.params.id) {
-      debugger;
       if (
         !this.state.loadedPost ||
         this.props.match.params.id !== this.state.loadedPost.id
       ) {
         axios.get(`/posts/${this.props.match.params.id}`).then(response => {
           this.setState({
-            loadedPost: response.data
+            loadedPost: response.data,
           });
         });
       }

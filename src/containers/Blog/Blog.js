@@ -17,7 +17,7 @@ class Blog extends Component {
             <ul>
               <li>
                 <NavLink
-                  to="/posts"
+                  to="/"
                   exact
                   activeClassName="active"
                   activeStyle={{ textDecoration: "underline" }}
@@ -30,7 +30,7 @@ class Blog extends Component {
                   to={{
                     pathname: "/new-post",
                     hash: "#submit",
-                    search: "?quick-submit=true"
+                    search: "?quick-submit=true",
                   }}
                   exact
                 >
@@ -41,7 +41,7 @@ class Blog extends Component {
           </nav>
         </header>
         <Switch>
-          <Route path="/posts" exact component={Posts} />
+          <Route path="/" exact component={Posts} />
           <Route path="/new-post" exact component={NewPost} />
           <Route path="/:id" exact component={FullPost} />
         </Switch>

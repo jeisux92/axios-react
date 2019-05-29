@@ -3,7 +3,7 @@ import axios from "../../../axios";
 import Post from "../../../components/Post/Post";
 import "./Posts.css";
 import { Route } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 class Posts extends Component {
   state = {
     blogs: []
@@ -11,6 +11,7 @@ class Posts extends Component {
 
   componentDidMount() {
     this.loadPosts();
+    console.log(this.props);
   }
   loadPosts = () => {
     axios
@@ -32,26 +33,24 @@ class Posts extends Component {
   };
   postSelectedHandler = id => {
     this.setState({ selectedPostId: id });
+    this.props.match;
   };
 
   render() {
     let posts = <p style={{ textAlign: "center" }}> Something went wrong! </p>;
     if (!this.state.error) {
       posts = this.state.blogs.map(post => (
-        <Post
-          key={post.id}
-          title={post.title}
-          author={post.author}
-          clicked={this.postSelectedHandler.bind(this, post.id)}
-        />
+        <Link to={"/" + post.id} key={post.id}>
+          <Post
+            title={post.title}
+            author={post.author}
+            {...this.props}
+            clicked={this.postSelectedHandler.bind(this, post.id)}
+          />
+        </Link>
       ));
     }
-    return (
-      <div>
-        <Route path="/new-post" exact render={()=><h1>Hi</h1>}/>
-        <section className="Posts"> {posts}</section>
-      </div>
-    );
+    return <section className="Posts"> {posts}</section>;
   }
 }
 

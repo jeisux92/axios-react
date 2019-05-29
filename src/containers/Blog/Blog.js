@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "./Blog.css";
 import Posts from "./Posts/Posts";
-import { Route } from "react-router-dom";
+import NewPost from "./NewPost/NewPost";
+import { Route, NavLink, Switch } from "react-router-dom";
+import FullPost from "./FullPost/FullPost";
 
 class Blog extends Component {
   postDeletedHandler = () => {
@@ -14,17 +16,35 @@ class Blog extends Component {
           <nav>
             <ul>
               <li>
-                <a href="/"> Home </a>
+                <NavLink
+                  to="/posts"
+                  exact
+                  activeClassName="active"
+                  activeStyle={{ textDecoration: "underline" }}
+                >
+                  Home
+                </NavLink>
               </li>
               <li>
-                <a href="/new-post"> New Post </a>
+                <NavLink
+                  to={{
+                    pathname: "/new-post",
+                    hash: "#submit",
+                    search: "?quick-submit=true"
+                  }}
+                  exact
+                >
+                  New Post
+                </NavLink>
               </li>
             </ul>
           </nav>
         </header>
-        <Route path="/" render={() => <h1>Hi 1</h1>} />
-
-        <Route path="/" exact component={Posts} />
+        <Switch>
+          <Route path="/posts" exact component={Posts} />
+          <Route path="/new-post" exact component={NewPost} />
+          <Route path="/:id" exact component={FullPost} />
+        </Switch>
       </div>
     );
   }
